@@ -4,18 +4,18 @@
       <v-flex xs12 xs10 md8 offset-sm1 offset-md2>
         <v-card class="info">
           <v-container fluid>
-            <v-layout row>
+            <v-layout row v-for="meetup in meetups" :key="meetup.id">
               <v-flex xs5 sm4 md3>
                 <v-card-media
-                  src= 'https://static.independent.co.uk/s3fs-public/styles/article_small/public/thumbnails/image/2018/01/31/09/new-york-main-image.jpg'
+                  :src="meetup.imageUrl"
                   height="125px"
                 ></v-card-media>
               </v-flex>
               <v-flex xs7 sm8 md9>
                 <v-card-title primary-title>
                   <div>
-                    <h5 class="white--text mb-0">My Meetup</h5>
-                    <div>13th APril 2018</div>
+                    <h5 class="white--text mb-0">{{ meetup.title }}</h5>
+                    <div>{{ meetup.date }}</div>
                   </div>
                 </v-card-title>
                 <v-card-actions>
@@ -32,3 +32,13 @@
     </v-layout row wrap>
   </v-container>
 </template>
+<script>
+  export default {
+    computed: {
+      meetups () {
+        return this.$store.getters.loadedMeetups
+      }
+    }
+  }
+</script>
+
