@@ -10,7 +10,7 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar fixed app dark class="accent">
+    <v-toolbar fixed app dark class="primary">
       <v-toolbar-side-icon 
         @click="sideNav = !sideNav"
         class="hidden-sm-and-up"
