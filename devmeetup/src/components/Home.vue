@@ -14,7 +14,10 @@
           <v-carousel-item
             v-for="meetup in meetups"
             :src="meetup.imageUrl"
-            :key="meetup.id">
+            :key="meetup.id"
+            v-on:click="onLoadMeetup(meetup.id)"
+            style="cursor: pointer"
+            >
             <div class="title-container">
               <h3 class="title-container__content">{{ meetup.title }}</h3>
             </div>
@@ -41,14 +44,19 @@ export default {
         },
         {
           imageUrl: 'https://www.england.nhs.uk/london/wp-content/uploads/sites/8/2013/09/london-eye-1400x520.jpg',
-          id: '2asd',
+          id: '2',
           title: 'Meetup in London' },
         {
           imageUrl: 'https://www.telegraph.co.uk/content/dam/Travel/Destinations/Asia/Japan/Tokyo/Tokyo%20lead-xxlarge.jpg',
-          id: '2',
+          id: '3',
           title: 'Meetup in Tokyo'
         }
       ]
+    }
+  },
+  methods: {
+    onLoadMeetup (id) {
+      this.$router.push('/meetups/' + id)
     }
   }
 }
