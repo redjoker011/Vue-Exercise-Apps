@@ -15,7 +15,7 @@
             v-for="meetup in meetups"
             :src="meetup.imageUrl"
             :key="meetup.id"
-            v-on:click="onLoadMeetup(meetup.id)"
+            @click.native="onLoadMeetup(meetup.id)"
             style="cursor: pointer"
             >
             <div class="title-container">
