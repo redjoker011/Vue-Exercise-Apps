@@ -19,6 +19,15 @@ const createLintingRule = () => ({
   }
 })
 
+module: {
+  rules: [
+    {
+      test: /\.styl$/,
+      loader: ['style-loader', 'css-loader', 'stylus-loader']
+    }
+  ]
+}
+
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
