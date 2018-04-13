@@ -25,19 +25,17 @@
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only" v-for="item in menuItems"
         :key="item.title">
-        <v-btn flat :to="item.link">
+        <v-btn flat to="item.link">
           <v-icon left dark>{{ item.icon }}</v-icon>
           {{ item.title }}
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
-    <main>
-      <v-content>
-        <v-container fluid>
-          <router-view></router-view>
-        </v-container>
-      </v-content>
-    </main>
+    <v-content>
+      <v-container fluid>
+        <router-view></router-view>
+      </v-container>
+    </v-content>
   </v-app>
 </template>
 

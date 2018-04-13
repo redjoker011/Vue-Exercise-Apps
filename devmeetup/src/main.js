@@ -13,6 +13,7 @@ import {
   VIcon,
   VGrid,
   VToolbar,
+  VCarousel,
   transitions
 } from 'vuetify'
 import './stylus/main.styl'
@@ -27,6 +28,7 @@ Vue.use(Vuetify, {
     VIcon,
     VGrid,
     VToolbar,
+    VCarousel,
     transitions
   }
 })
