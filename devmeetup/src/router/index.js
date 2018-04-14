@@ -29,7 +29,8 @@ export default new Router({
     },
     {
       path: '/meetups/:id',
-      naem: 'SpecificMeetup',
+      name: 'SpecificMeetup',
+      props: true,
       component: Meetup
     },
     {

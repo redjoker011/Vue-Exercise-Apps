@@ -6,11 +6,11 @@
           <h6 class="primary--text">My Meetup</h6>
         </v-card-title>
         <v-card-media
-          src= 'https://static.independent.co.uk/s3fs-public/styles/article_small/public/thumbnails/image/2018/01/31/09/new-york-main-image.jpg'
+          :src= 'meetup.imageUrl'
           height="400px"
         ></v-card-media>
       <v-card-text>
-        <div class="mb-2 info--text">13th April 2018</div>
+        <div class="mb-2 info--text">{{ meetup.date }}</div>
         <div>
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry's standard dummy text ever
@@ -26,4 +26,14 @@
     </v-flex>
   </v-container>
 </template>
+<script>
+ export default {
+   props: ['id'],
+   computed: {
+     meetup () {
+       return this.$store.getters.loadedMeetup(this.id)
+     }
+   }
+ }
+</script>
 
