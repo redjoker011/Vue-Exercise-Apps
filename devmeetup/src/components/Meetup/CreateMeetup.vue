@@ -135,6 +135,7 @@
             id: 'asdsd',
             date: this.formattedDateTime
           }
+          console.log(meetupData)
           this.$store.dispatch('createMeetup', meetupData)
           this.$router.push('/meetups')
         }
