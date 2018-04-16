@@ -71,7 +71,6 @@
                 <v-time-picker v-model="time" format="24hr" actions></v-time-picker>
             </v-flex>
           </v-layout>
-          {{ formattedDateTime }}
           <v-layout row>
             <v-flex xs12 sm6 offset-sm3>
               <v-btn class="success"
