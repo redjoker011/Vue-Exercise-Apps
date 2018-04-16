@@ -10,7 +10,7 @@
           height="400px"
         ></v-card-media>
       <v-card-text>
-        <div class="mb-2 info--text">{{ meetup.date }} - {{ meetup.location }}</div>
+        <div class="mb-2 info--text">{{ meetup.date || formattedDate }} - {{ meetup.location }}</div>
         <div>
           {{ meetup.description }}
         </div>
@@ -29,6 +29,11 @@
    computed: {
      meetup () {
        return this.$store.getters.loadedMeetup(this.id)
+     }
+   },
+   filters: {
+     formatterDate (val) {
+       Date(val)
      }
    }
  }
