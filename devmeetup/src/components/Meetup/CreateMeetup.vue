@@ -58,6 +58,22 @@
           </v-layout>
           <v-layout row>
             <v-flex xs12 sm6 offset-sm3>
+              <h4>Choose Date and Time</h4>
+            </v-flex>
+          </v-layout>
+          <v-layout row class="mb-2">
+            <v-flex xs12 sm6 offset-sm3>
+              <v-date-picker v-model="date" scrollable reactive></v-date-picker>
+            </v-flex>
+          </v-layout>
+          <v-layout row>
+            <v-flex xs12 sm6 offset-sm3>
+                <v-time-picker v-model="time" format="24hr" actions></v-time-picker>
+            </v-flex>
+          </v-layout>
+          {{ formattedDateTime }}
+          <v-layout row>
+            <v-flex xs12 sm6 offset-sm3>
               <v-btn class="success"
                 :disabled="!formIsValid"
                 type="submit"
@@ -70,38 +86,66 @@
   </v-container>
 </template>
 <script>
- export default {
-   data () {
-     return {
-       title: '',
-       location: '',
-       description: '',
-       imageUrl: ''
-     }
-   },
-   computed: {
-     formIsValid () {
-       return this.title !== '' &&
-       this.location !== '' &&
-       this.imageUrl !== '' &&
-       this.description !== ''
-     }
-   },
-   methods: {
-     createMeetup () {
-       if (this.formIsValid) {
-         const meetupData = {
-           title: this.title,
-           location: this.location,
-           imageUrl: this.imageUrl,
-           description: this.description,
-           date: new Date(),
-           id: 'asdsd'
-         }
-         this.$store.dispatch('createMeetup', meetupData)
-         this.$router.push('/meetups')
-       }
-     }
-   }
- }
+  export default {
+    data () {
+      return {
+        title: '',
+        location: '',
+        description: '',
+        imageUrl: '',
+        date: null,
+        time: new Date()
+      }
+    },
+    computed: {
+      formIsValid () {
+        return this.title !== '' &&
+        this.location !== '' &&
+        this.imageUrl !== '' &&
+        this.description !== '' &&
+        this.date !== null
+      },
+      formattedDateTime () {
+        const date = new Date(this.date)
+        if (typeof this.time === 'string') {
+          const hours = this.time.match(/^(\d+)/)[1]
+          const minutes = this.time.match(/:(\d+)/)[1]
+          date.setHours(hours)
+          date.setMinutes(minutes)
+        } else {
+          date.setHours(this.time.getHours())
+          date.setMinutes(this.time.getMinutes())
+        }
+        return date
+      }
+    },
+    watch: {
+      date (val, oldVal) {
+        this.dateString = getanggal(val)
+      }
+    },
+    methods: {
+      createMeetup () {
+        if (this.formIsValid) {
+          const meetupData = {
+            title: this.title,
+            location: this.location,
+            imageUrl: this.imageUrl,
+            description: this.description,
+            id: 'asdsd',
+            date: this.formattedDateTime
+          }
+          this.$store.dispatch('createMeetup', meetupData)
+          this.$router.push('/meetups')
+        }
+      }
+    }
+  }
+
+function getanggal (str) {
+    if (str != null) {
+      return str.substring(8, 10) + '/' + str.substring(5, 7) + '/' + str.substring(0, 4)
+    }
+    return ''
+}
 </script>

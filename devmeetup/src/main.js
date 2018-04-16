@@ -17,7 +17,10 @@ import {
   VCarousel,
   VCard,
   VTextField,
-  transitions
+  VDatePicker,
+  VTimePicker,
+  transitions,
+  VDialog
 } from 'vuetify'
 import './stylus/main.styl'
 
@@ -34,7 +37,10 @@ Vue.use(Vuetify, {
     VCarousel,
     VCard,
     VTextField,
-    transitions
+    VDatePicker,
+    VTimePicker,
+    transitions,
+    VDialog
   }
 })
 
