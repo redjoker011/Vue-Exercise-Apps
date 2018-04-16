@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import { store } from './store'
+import DateFilter from './filters/date'
 import {
   Vuetify,
   VApp,
@@ -24,6 +25,7 @@ import {
 } from 'vuetify'
 import './stylus/main.styl'
 
+Vue.filter('date', DateFilter)
 Vue.use(Vuetify, {
   components: {
     VApp,
