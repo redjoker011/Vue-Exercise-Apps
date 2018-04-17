@@ -59,6 +59,7 @@ export const store = new Vuex.Store({
         })
     },
     createMeetup ({commit, getters}, payload) {
+      commit('setLoading', true)
       const meetup = {
         title: payload.title,
         location: payload.location,
@@ -79,7 +80,7 @@ export const store = new Vuex.Store({
         .then(key => {
           const filename = payload.image.name
           const ext = filename.slice(filename.lastIndexOf('.'))
-          // Store on firebase storage
+          // Store Image on firebase storage
           return firebase.storage().ref('meetups/' + key + '.' + ext).put(payload.image)
         })
         .then(fileData => {
@@ -94,8 +95,10 @@ export const store = new Vuex.Store({
             id: key,
             imageUrl: imageUrl
           })
+          commit('setLoading', false)
         })
         .catch((error) => {
+          commit('setLoading', false)
           console.log(error)
         })
     },
