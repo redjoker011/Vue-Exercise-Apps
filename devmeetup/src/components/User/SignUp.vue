@@ -39,7 +39,7 @@
                   <v-flex xs12>
                     <v-text-field
                       name="confirmPassword"
-                      label="Confirn Password"
+                      label="Confirm Password"
                       id="confirmPassword"
                       v-model="confirmPassword"
                       type="password"
