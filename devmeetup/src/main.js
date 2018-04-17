@@ -25,6 +25,7 @@ import {
   VTimePicker,
   VAlert,
   VProgressCircular,
+  VDivider,
   transitions,
   VDialog
 } from 'vuetify'
@@ -48,6 +49,7 @@ Vue.use(Vuetify, {
     VTimePicker,
     VAlert,
     VProgressCircular,
+    VDivider,
     transitions,
     VDialog
   }

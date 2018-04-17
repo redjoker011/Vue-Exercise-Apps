@@ -1,11 +1,10 @@
 <template>
   <v-container>
-    <v-layout row>
+    <v-layout row v-if="loading">
       <v-flex xs12 class="text-xs-center">
         <v-progress-circular indeterminate color="primary"
           :width="7"
-          :size="70"
-          v-if="loading">
+          :size="70">
         </v-progress-circular>
       </v-flex>
     </v-layout>
@@ -13,7 +12,7 @@
       v-for="meetup in meetups"
       :key="meetup.id"
       class="mb-2"
-      v-if="!loading">
+      v-else>
       <v-flex xs13 xs10 md8 offset-sm1 offset-md2>
         <v-card class="info">
           <v-container fluid>
