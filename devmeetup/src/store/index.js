@@ -50,6 +50,7 @@ export const store = new Vuex.Store({
               creatorId: obj[key].creatorId
             })
           }
+          console.log(meetups)
           commit('setLoading', false)
           commit('setLoadedMeetups', meetups)
         })

@@ -1,6 +1,15 @@
 <template>
   <v-container>
-    <v-flex xs12>
+    <v-layout row>
+      <v-flex xs12 class="text-xs-center">
+        <v-progress-circular indeterminate color="primary"
+          :width="7"
+          :size="70"
+          v-if="loading">
+        </v-progress-circular>
+      </v-flex>
+    </v-layout>
+    <v-flex xs12 v-if="!loading">
       <v-card>
         <v-card-title>
           <h6 class="primary--text">My Meetup</h6>
@@ -29,6 +38,9 @@
    computed: {
      meetup () {
        return this.$store.getters.loadedMeetup(this.id)
+     },
+     loading () {
+       return this.$store.getters.loading
      }
    }
  }
