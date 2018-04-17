@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import * as firebase from 'firebase'
 
 Vue.use(Vuex)
 
@@ -32,14 +33,14 @@ export const store = new Vuex.Store({
         description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
       }
     ],
-    user: {
-      id: 'asdsd',
-      registeredMeetups: ['asdsdsa']
-    }
+    user: null
   },
   mutations: {
     createMeetup (state, payload) {
       state.loadedMeetups.push(payload)
+    },
+    setUser (state, payload) {
+      state.user = payload
     }
   },
   actions: {
@@ -54,6 +55,23 @@ export const store = new Vuex.Store({
       }
       // Reach to firebase and store it
       commit('createMeetup', meetup)
+    },
+    signUp ({commit}, payload) {
+      firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
+        .then(
+          user => {
+            const newUser = {
+              id: user.uid,
+              registeredMeetups: []
+            }
+            commit('setUser', newUser)
+          }
+        )
+        .catch(
+          error => {
+            console.log(error)
+          }
+        )
     }
   },
   getters: {
@@ -73,6 +91,9 @@ export const store = new Vuex.Store({
     },
     featuredMeetups (state, getters) {
       return getters.loadedMeetups.slice(0, 5)
+    },
+    user (state) {
+      return state.user
     }
   }
 })
