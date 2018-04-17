@@ -59,7 +59,7 @@ export default {
       if (this.userIsAuthenticated) {
         menuItems = [
           { icon: 'supervisor_account', title: 'View Meetups', link: '/meetups' },
-          { icon: 'room', title: 'Organizer Meetup', link: '/meetup/new' },
+          { icon: 'room', title: 'Organized Meetup', link: '/meetups/new' },
           { icon: 'person', title: 'Profile', link: '/profile' }
         ]
       }
