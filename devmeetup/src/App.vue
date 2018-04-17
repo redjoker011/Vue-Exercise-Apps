@@ -12,6 +12,12 @@
           </v-list-tile-action>
           <v-list-tile-content>{{ item.title }}</v-list-tile-content>
         </v-list-tile>
+        <v-list-tile v-if="userIsAuthenticated" @click="onLogout">
+          <v-list-tile-action>
+            <v-icon>exit_to_app</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>Logout</v-list-tile-content>
+        </v-list-tile>
       </v-list>
     </v-navigation-drawer>
     <v-toolbar fixed app dark class="primary">
@@ -23,11 +29,17 @@
       <router-link to='/' tag='span' style='cursor: pointer'>Dev Meetup</router-link>
     </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-toolbar-items class="hidden-xs-only" v-for="item in menuItems"
-        :key="item.title">
-        <v-btn flat :to="item.link">
+      <v-toolbar-items class="hidden-xs-only">
+        <v-btn flat 
+          v-for="item in menuItems"
+          :key="item.title"
+          :to="item.link">
           <v-icon left dark>{{ item.icon }}</v-icon>
           {{ item.title }}
+        </v-btn>
+        <v-btn flat v-if="userIsAuthenticated" @click="onLogout">
+          <v-icon left dark>exit_to_app</v-icon>
+          Logout
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
@@ -64,6 +76,11 @@ export default {
         ]
       }
       return menuItems
+    }
+  },
+  methods: {
+    onLogout () {
+      this.$store.dispatch('logout')
     }
   },
   name: 'App'
