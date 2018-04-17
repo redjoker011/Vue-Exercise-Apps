@@ -23,6 +23,7 @@ import {
   VDatePicker,
   VTimePicker,
   VAlert,
+  VProgressCircular,
   transitions,
   VDialog
 } from 'vuetify'
@@ -45,6 +46,7 @@ Vue.use(Vuetify, {
     VDatePicker,
     VTimePicker,
     VAlert,
+    VProgressCircular,
     transitions,
     VDialog
   }
@@ -70,5 +72,6 @@ new Vue({
       projectId: 'vue-devmeetup-25f48',
       storageBucket: ''
     })
+    this.$store.dispatch('loadMeetups')
   }
 })

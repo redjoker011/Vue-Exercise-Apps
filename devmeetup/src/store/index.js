@@ -7,37 +7,15 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
 
   state: {
-    loadedMeetups: [
-      {
-        imageUrl: 'https://static.independent.co.uk/s3fs-public/styles/article_small/public/thumbnails/image/2018/01/31/09/new-york-main-image.jpg',
-        id: '1',
-        title: 'Meetup in Newyork',
-        date: new Date(),
-        location: 'New York',
-        description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-      },
-      {
-        imageUrl: 'https://www.england.nhs.uk/london/wp-content/uploads/sites/8/2013/09/london-eye-1400x520.jpg',
-        id: '2',
-        title: 'Meetup in London',
-        date: new Date(),
-        location: 'london',
-        description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-      },
-      {
-        imageUrl: 'https://www.telegraph.co.uk/content/dam/Travel/Destinations/Asia/Japan/Tokyo/Tokyo%20lead-xxlarge.jpg',
-        id: '3',
-        title: 'Meetup in Tokyo',
-        date: new Date(),
-        location: 'Tokyo',
-        description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-      }
-    ],
+    loadedMeetups: [],
     user: null,
     loading: false,
     error: null
   },
   mutations: {
+    setLoadedMeetups (state, payload) {
+      state.loadedMeetups = payload
+    },
     createMeetup (state, payload) {
       state.loadedMeetups.push(payload)
     },
@@ -55,19 +33,47 @@ export const store = new Vuex.Store({
     }
   },
   actions: {
+    loadMeetups ({commit}) {
+      commit('setLoading', true)
+      firebase.database().ref('meetups').once('value')
+        .then((data) => {
+          const meetups = []
+          const obj = data.val()
+          for (let key in obj) {
+            meetups.push({
+              id: key,
+              title: obj[key].title,
+              description: obj[key].description,
+              imageUrl: obj[key].imageUrl,
+              date: obj[key].date,
+              location: obj[key].location
+            })
+          }
+          commit('setLoading', false)
+          commit('setLoadedMeetups', meetups)
+        })
+        .catch((error) => {
+          commit('setLoading', false)
+          console.log(error)
+        })
+    },
     createMeetup ({commit}, payload) {
       const meetup = {
         title: payload.title,
         location: payload.location,
         imageUrl: payload.imageUrl,
         description: payload.description,
-        date: payload.date
+        date: payload.date.toISOString()
       }
       // Reach to firebase and store it
       firebase.database().ref('meetups').push(meetup)
         .then((data) => {
-          console.log(data)
-          commit('createMeetup', meetup)
+          // get firebase record key/id
+          const key = data.key
+          commit('createMeetup', {
+            ...meetup,
+            id: key
+          })
         })
         .catch((error) => {
           console.log(error)
