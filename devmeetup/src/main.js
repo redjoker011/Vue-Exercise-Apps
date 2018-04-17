@@ -6,6 +6,7 @@ import router from './router'
 import { store } from './store'
 import DateFilter from './filters/date'
 import * as firebase from 'firebase'
+import AlertCmp from './components/shared/Alert'
 import {
   Vuetify,
   VApp,
@@ -21,6 +22,7 @@ import {
   VTextField,
   VDatePicker,
   VTimePicker,
+  VAlert,
   transitions,
   VDialog
 } from 'vuetify'
@@ -42,12 +44,16 @@ Vue.use(Vuetify, {
     VTextField,
     VDatePicker,
     VTimePicker,
+    VAlert,
     transitions,
     VDialog
   }
 })
 
 Vue.config.productionTip = false
+
+// Desclare Global Component
+Vue.component('app-alert', AlertCmp)
 
 /* eslint-disable no-new */
 new Vue({
