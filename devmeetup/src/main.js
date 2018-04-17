@@ -7,6 +7,7 @@ import { store } from './store'
 import DateFilter from './filters/date'
 import * as firebase from 'firebase'
 import AlertCmp from './components/shared/Alert'
+import EditMeetupDialog from './components/Meetup/Edit/MeetupDetailDialog'
 import {
   Vuetify,
   VApp,
@@ -56,6 +57,7 @@ Vue.config.productionTip = false
 
 // Desclare Global Component
 Vue.component('app-alert', AlertCmp)
+Vue.component('app-edit-meetup', EditMeetupDialog)
 
 /* eslint-disable no-new */
 new Vue({
