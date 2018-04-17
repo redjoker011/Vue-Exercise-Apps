@@ -30,13 +30,15 @@
           </v-layout>
           <v-layout row>
             <v-flex xs12 sm6 offset-sm3>
-              <v-text-field
-                name="image-url"
-                label="Image Url"
-                id="image-url"
-                required
-                v-model="imageUrl"
-                ></v-text-field>
+              <v-btn raised class="primary" @click="onPickFile">Upload Image</v-btn>
+              <!-- Accept any image using accept attr -->
+              <input type="file"
+              style="display: none"
+              ref="fileInput"
+              accept="image/*"
+              @change="onFilePick"
+              >
+              </input>
             </v-flex>
           </v-layout>
           <v-layout row>
@@ -93,7 +95,8 @@
         description: '',
         imageUrl: '',
         date: null,
-        time: new Date()
+        time: new Date(),
+        image: null
       }
     },
     computed: {
@@ -125,19 +128,43 @@
     },
     methods: {
       createMeetup () {
-        if (this.formIsValid) {
-          const meetupData = {
-            title: this.title,
-            location: this.location,
-            imageUrl: this.imageUrl,
-            description: this.description,
-            id: 'asdsd',
-            date: this.formattedDateTime
-          }
-          console.log(meetupData)
-          this.$store.dispatch('createMeetup', meetupData)
-          this.$router.push('/meetups')
+        if (!this.formIsValid) {
+          return
         }
+        if (!this.image) {
+          return
+        }
+        const meetupData = {
+          title: this.title,
+          location: this.location,
+          // For optimization Save binary file instead of base64 string in database
+          image: this.image,
+          description: this.description,
+          id: 'asdsd',
+          date: this.formattedDateTime
+        }
+        console.log(meetupData)
+        this.$store.dispatch('createMeetup', meetupData)
+        this.$router.push('/meetups')
+      },
+      onPickFile () {
+        // Add ref on input element and trigger click event
+        this.$refs.fileInput.click()
+      },
+      onFilePick (event) {
+        const files = event.target.files
+        let fileName = files[0].name
+        if (fileName.lastIndexOf('.') <= 0) {
+          return alert('Please add a valid file')
+        }
+        const fileReader = new FileReader()
+        // Change File input value on load
+        fileReader.addEventListener('load', () => {
+          // Set image as base64 string
+          this.imageUrl = fileReader.result
+        })
+        fileReader.readAsDataURL(files[0])
+        this.image = files[0]
       }
     }
   }

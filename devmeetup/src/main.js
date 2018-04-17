@@ -70,7 +70,7 @@ new Vue({
       authDomain: 'vue-devmeetup-25f48.firebaseapp.com',
       databaseURL: 'https://vue-devmeetup-25f48.firebaseio.com',
       projectId: 'vue-devmeetup-25f48',
-      storageBucket: ''
+      storageBucket: 'gs://vue-devmeetup-25f48.appspot.com'
     })
     // Auto Sign In User
     firebase.auth().onAuthStateChanged((user) => {
