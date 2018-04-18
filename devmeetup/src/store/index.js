@@ -47,6 +47,20 @@ export const store = new Vuex.Store({
       if (payload.date) {
         meetup.date = payload.date
       }
+    },
+    registerMeetup (state, payload) {
+      const id = payload.id
+      if (state.user.registeredMeetups.findIndex(meetup => meetup.id === id) >= 0) {
+        return
+      }
+      state.user.registeredMeetups.push(id)
+      state.user.fbKeys[id] = payload.fbkey
+    },
+    unregisterMeetup (state, payload) {
+      const registeredMeetups = state.user.registeredMeetups
+      registeredMeetups.splice(registeredMeetups.findIndex(meetup => meetup.id === payload), 1)
+      // Remove key using Reflect
+      Reflect.deleteProperty(state.user.fbKeys, payload)
     }
   },
   actions: {
@@ -129,7 +143,8 @@ export const store = new Vuex.Store({
             commit('setLoading', false)
             const newUser = {
               id: user.uid,
-              registeredMeetups: []
+              registeredMeetups: [],
+              fbKeys: {}
             }
             commit('setUser', newUser)
           }
@@ -150,7 +165,8 @@ export const store = new Vuex.Store({
             commit('setLoading', false)
             const fetchedUser = {
               id: user.uid,
-              registeredMeetups: []
+              registeredMeetups: [],
+              fbKeys: {}
             }
             commit('setUser', fetchedUser)
           }
@@ -164,7 +180,7 @@ export const store = new Vuex.Store({
         )
     },
     autoSignin ({commit}, payload) {
-      commit('setUser', payload)
+      commit('setUser', {uid: payload.uid, registeredMeetups: [], fbKeys: {}})
     },
     logout ({commit}) {
       firebase.auth().signOut()
@@ -191,6 +207,37 @@ export const store = new Vuex.Store({
           commit('updateMeetup', updatedObj)
         })
         .catch((error) => {
+          console.log(error)
+          commit('setLoading', false)
+        })
+    },
+    registerMeetup ({commit, getters}, payload) {
+      commit('setLoading', true)
+      firebase.database().ref('/users/' + getters.user.uid).child('/registration/').push(payload)
+        .then(data => {
+          commit('setLoading', false)
+          commit('registerMeetup', {id: payload, fbKey: data.key})
+        })
+        .catch(error => {
+          console.log(error)
+          commit('setLoading', false)
+        })
+    },
+    unregisterMeetup ({commit, getters}, payload) {
+      commit('setLoading', true)
+      const user = getters.user
+      if (user.fbKeys) {
+        return
+      }
+      const fbKey = user.fbKeys[payload]
+      // Remove record in firebase
+      firebase.database().ref('/users/' + user.id + '/registrations/').child(fbKey)
+      .remove()
+        .then(data => {
+          commit('setLoading', false)
+          commit('unregisterMeetup', payload)
+        })
+        .catch(error => {
           console.log(error)
           commit('setLoading', false)
         })
