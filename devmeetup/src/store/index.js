@@ -182,6 +182,31 @@ export const store = new Vuex.Store({
     autoSignin ({commit}, payload) {
       commit('setUser', {uid: payload.uid, registeredMeetups: [], fbKeys: {}})
     },
+    fetchUserData ({commit, getters}) {
+      commit('setLoading', true)
+      firebase.database().ref('/users/' + getters.user.uid + '/registrations').once('value')
+        .then(data => {
+          commit('setLoading', false)
+          const dataPairs = data.val()
+          let registeredMeetups = []
+          let swappedPairs = {} // storage for reverse object
+          // Loop for getting object values
+          for (let key in dataPairs) {
+            registeredMeetups.push(dataPairs[key])
+            swappedPairs[dataPairs[key]] = key
+          }
+          const updatedUser = {
+            uid: getters.user.uid,
+            registeredMeetups: registeredMeetups,
+            fbKeys: swappedPairs
+          }
+          commit('setUser', updatedUser)
+        })
+        .catch(error => {
+          console.log(error)
+          commit('setLoading', false)
+        })
+    },
     logout ({commit}) {
       firebase.auth().signOut()
       commit('setUser', null)
