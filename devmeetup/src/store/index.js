@@ -54,7 +54,7 @@ export const store = new Vuex.Store({
         return
       }
       state.user.registeredMeetups.push(id)
-      state.user.fbKeys[id] = payload.fbkey
+      state.user.fbKeys[id] = payload.fbKey
     },
     unregisterMeetup (state, payload) {
       const registeredMeetups = state.user.registeredMeetups
@@ -213,7 +213,7 @@ export const store = new Vuex.Store({
     },
     registerMeetup ({commit, getters}, payload) {
       commit('setLoading', true)
-      firebase.database().ref('/users/' + getters.user.uid).child('/registration/').push(payload)
+      firebase.database().ref('/users/' + getters.user.uid).child('/registrations/').push(payload)
         .then(data => {
           commit('setLoading', false)
           commit('registerMeetup', {id: payload, fbKey: data.key})
@@ -226,12 +226,13 @@ export const store = new Vuex.Store({
     unregisterMeetup ({commit, getters}, payload) {
       commit('setLoading', true)
       const user = getters.user
-      if (user.fbKeys) {
+      if (!user.fbKeys) {
+        commit('setLoading', false)
         return
       }
       const fbKey = user.fbKeys[payload]
       // Remove record in firebase
-      firebase.database().ref('/users/' + user.id + '/registrations/').child(fbKey)
+      firebase.database().ref('/users/' + user.uid + '/registrations/').child(fbKey)
       .remove()
         .then(data => {
           commit('setLoading', false)
