@@ -1,29 +1,14 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
 import * as firebase from 'firebase'
 
-Vue.use(Vuex)
-
-export const store = new Vuex.Store({
+export default {
 
   state: {
-    user: null,
-    loading: false,
-    error: null
+    user: null
   },
   mutations: {
     setUser (state, payload) {
       state.user = payload
-    },
-    setLoading (state, payload) {
-      state.loading = payload
-    },
-    setError (state, payload) {
-      state.error = payload
-    },
-    clearError (state) {
-      state.error = null
-    },
+    }
   },
   actions: {
     signUp ({commit}, payload) {
@@ -139,12 +124,6 @@ export const store = new Vuex.Store({
   getters: {
     user (state) {
       return state.user
-    },
-    loading (state) {
-      return state.loading
-    },
-    error (state) {
-      return state.error
     }
   }
-})
+}
